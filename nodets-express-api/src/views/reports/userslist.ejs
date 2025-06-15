@@ -1,0 +1,28 @@
+
+<div id="report-title"><h1>Users</h1></div>
+<table class="table table-sm table-striped">
+    <thead>
+        <tr>
+            <th>Userid</th>
+            <th>Username</th>
+            <th>Useremail</th>
+            <th>Usertele</th>
+            <th>Userphoto</th>
+            <th>User Role Id</th>
+            <th>Roles Role Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% records.forEach(function(record){ %>
+        <tr>
+            <td><%= record.userid %></td>
+            <td><%= record.username %></td>
+            <td><%= record.useremail %></td>
+            <td><%= record.usertele %></td>
+            <td><%= record.userphoto %></td>
+            <td><%= record.user_role_id %></td>
+            <td><%= record.roles_role_name %></td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>

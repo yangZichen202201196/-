@@ -1,0 +1,26 @@
+
+<div id="report-title"><h1>Study Records</h1></div>
+<table class="table table-sm table-striped">
+    <thead>
+        <tr>
+            <th>Record Id</th>
+            <th>Userid</th>
+            <th>Course Id</th>
+            <th>Progress</th>
+            <th>Study Date</th>
+            <th>Study Duration</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% records.forEach(function(record){ %>
+        <tr>
+            <td><%= record.record_id %></td>
+            <td><%= record.userid %></td>
+            <td><%= record.course_id %></td>
+            <td><%= record.progress %></td>
+            <td><%= record.study_date %></td>
+            <td><%= record.study_duration %></td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>

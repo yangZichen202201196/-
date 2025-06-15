@@ -1,0 +1,30 @@
+
+<div id="report-title"><h1>Courses</h1></div>
+<table class="table table-sm table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Course Name</th>
+            <th>Course Video</th>
+            <th>Teacher Id</th>
+            <th>Rating</th>
+            <th>Enrollment Count</th>
+            <th>Users Username</th>
+            <th>Users Userphoto</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% records.forEach(function(record){ %>
+        <tr>
+            <td><%= record.id %></td>
+            <td><%= record.course_name %></td>
+            <td><%= record.course_video %></td>
+            <td><%= record.teacher_id %></td>
+            <td><%= record.rating %></td>
+            <td><%= record.enrollment_count %></td>
+            <td><%= record.users_username %></td>
+            <td><%= record.users_userphoto %></td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>

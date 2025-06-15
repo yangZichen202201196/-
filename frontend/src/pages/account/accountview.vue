@@ -1,0 +1,236 @@
+<template>
+    <main class="main-page"  id="">
+        <template v-if="pageReady">
+            <section class="page-section " >
+                <div class="container">
+                    <div class="grid ">
+                        <div  class="col comp-grid" >
+                            <div >
+                                <div class="mb-4 card surface-100">
+                                    <div class="grid align-items-center">
+                                        <div class="col-fixed" style="width:180x">
+                                            <image-viewer class="border-round" style="max-width:100%;max-height:100px" width="auto" height="auto" image-size="medium" :src="auth.userPhoto" />
+                                        </div>
+                                        <div class="col">
+                                            <div class="text-3xl font-bold text-primary"> {{ auth.userName }} </div>
+                                            <div class="text-gray-500"> {{ auth.userEmail }} </div>
+                                            <div class="text-sm text-500 text-capitalize pt-1" v-if="auth.userRole">{{ auth.userRole}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <TabView v-model:activeIndex="activeTab">
+                                    <TabPanel>
+                                        <template #header>
+                                            <i class="pi pi-user mr-2"></i>
+                                            <span>{{ $t('accountDetail') }}</span>
+                                        </template>
+                                        <div class="mb-3 grid ">
+                                            <div class="col-12 md:col-4">
+                                                <div class="flex gap-2 align-items-center card shadow-none p-3 surface-100 ">
+                                                    <div class="">
+                                                        <div class="text-400 mb-1">{{ $t('userid') }}</div>
+                                                        <div class="font-bold">{{ item.userid }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 md:col-4">
+                                                <div class="flex gap-2 align-items-center card shadow-none p-3 surface-100 ">
+                                                    <div class="">
+                                                        <div class="text-400 mb-1">{{ $t('username') }}</div>
+                                                        <div class="font-bold">{{ item.username }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 md:col-4">
+                                                <div class="flex gap-2 align-items-center card shadow-none p-3 surface-100 ">
+                                                    <div class="">
+                                                        <div class="text-400 mb-1">{{ $t('useremail') }}</div>
+                                                        <div class="font-bold">{{ item.useremail }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 md:col-4">
+                                                <div class="flex gap-2 align-items-center card shadow-none p-3 surface-100 ">
+                                                    <div class="">
+                                                        <div class="text-400 mb-1">{{ $t('usertele') }}</div>
+                                                        <div class="font-bold">{{ item.usertele }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 md:col-4">
+                                                <div class="flex gap-2 align-items-center card shadow-none p-3 surface-100 ">
+                                                    <div class="">
+                                                        <div class="text-400 mb-1">{{ $t('userRoleId') }}</div>
+                                                        <div class="font-bold">
+                                                            <Button class="p-button-text" icon="pi pi-eye" :label="$t('rolesDetail')" v-if="item.user_role_id" @click="app.openPageDialog({ page: 'roles/view', url: `/roles/view/${item.user_role_id}` , closeBtn: true })" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </TabPanel>
+                                    <TabPanel>
+                                        <template #header>
+                                            <i class="pi pi-pencil  mr-2"></i>
+                                            <span>{{ $t('editAccount') }}</span>
+                                        </template>
+                                        <div class="reset-grid">
+                                            <account-edit-page is-sub-page></account-edit-page>
+                                            </div>
+                                        </TabPanel>
+                                        <TabPanel>
+                                            <template #header>
+                                                <i class="pi pi-lock  mr-2"></i>
+                                                <span>{{ $t('changePassword') }}</span>
+                                            </template>
+                                            <div class="reset-grid">
+                                                <change-password-page is-sub-page></change-password-page>
+                                            </div>
+                                        </TabPanel>
+                                    </TabView>
+                                </div>
+                                <div class="">
+                                    <div class="card my-3 p-3 surface-50">
+                                        <NotificationsListPage ref="notificationsListPage"  :limit="10" field-name="notifications.student_id" :field-value="item.userid" :show-header="true" :show-breadcrumbs="true" :show-footer="true" :paginate="true" page-store-key="USERS_ACCOUNTVIEW-NOTIFICATIONS" is-sub-page>
+                                        </NotificationsListPage>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="card my-3 p-3 surface-50">
+                                        <CertificatesListPage ref="certificatesListPage"  :limit="5" :show-header="true" :show-breadcrumbs="true" :show-footer="true" :paginate="true" page-store-key="USERS_ACCOUNTVIEW-CERTIFICATES" is-sub-page>
+                                        </CertificatesListPage>
+                                    </div>
+                                </div>
+                                <div :class="{ 'card ': !isSubPage }" class="">
+                                    <div class="q-pa-md">
+                                        <div class="font-bold text-lg">course_grade</div>
+                                        <div class="text-500"></div>
+                                        <hr />
+                                        <div class="row q-col-gutter-sm">
+                                            <div class="col">
+                                                <api-data-source :enable-cache="false"   api-path="components_data/linechart_course_grade" >
+                                                    <template v-slot="req">
+                                                        <div style="position:relative;text-align:center">
+                                                            <div class="text-center p-3" v-if="req.loading">
+                                                                <ProgressSpinner style="width:50px;height:50px" />
+                                                            </div>
+                                                            <vue-chart :chart-data="req.response" chart-type="line" ></vue-chart>
+                                                        </div>
+                                                    </template>
+                                                </api-data-source>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </template>
+            <template v-if="loading">
+                <div style="min-height:200px" class="flex gap-3 justify-content-center align-items-center p-3">
+                    <div><ProgressSpinner style="width:50px;height:50px" /> </div>
+                    <div class="text-500">{{ $t('loading') }} </div>
+                </div>
+            </template>
+        </main>
+</template>
+<script setup>
+	import {  ref, toRefs, onMounted } from 'vue';
+	import { useApp } from 'src/composables/app.js';
+	import { useAuth } from 'src/composables/auth';
+	import { $t } from 'src/services/i18n';
+	import  AccountEditPage  from "./accountedit.vue";
+	import  ChangePasswordPage  from "./changepassword.vue";
+	import { useViewPage } from 'src/composables/viewpage.js';
+	import { usePageStore } from 'src/store/page';
+	import NotificationsListPage from "../notifications/list.vue";
+import CertificatesListPage from "../certificates/list.vue";
+import VueChart from 'src/components/VueCharts.vue';
+	const props = defineProps({
+		id: [String, Number],
+		primaryKey: {
+			type: String,
+			default: 'userid',
+		},
+		pageStoreKey: {
+			type: String,
+			default: 'ACCOUNT',
+		},
+		pageName: {
+			type: String,
+			default: 'users',
+		},
+		routeName: {
+			type: String,
+			default: 'usersaccountview',
+		},
+		apiPath: {
+			type: String,
+			default: 'account',
+		},
+		autoLoad: {
+			type: Boolean,
+			default: true,
+		},
+		titleBeforeDelete: {
+			type: String,
+			default: $t('deleteRecord'),
+		},
+		msgBeforeDelete: {
+			type: String,
+			default: () => $t('promptDeleteRecord'),
+		},
+		msgAfterDelete: {
+			type: String,
+			default: () => $t('recordDeletedSuccessfully'),
+		},
+		exportButton: {
+			type: Boolean,
+			default: true,
+		},
+		showHeader: {
+			type: Boolean,
+			default: true,
+		},
+		showFooter: {
+			type: Boolean,
+			default: true,
+		},
+		isSubPage: {
+			type : Boolean,
+			default : false,
+		},
+	});
+	const store = usePageStore(props.pageStoreKey);
+	const app = useApp(props);
+	const auth = useAuth();
+	const page = useViewPage({ store, props });
+	const activeTab = ref(0);
+	const { currentRecord } = toRefs(store.state);
+	const { loading, pageReady } = toRefs(page.state);
+	const item = currentRecord;
+	const { load, deleteItem, } = page.methods;
+	function getActionMenuModel(data){
+		return [
+		{
+			label: () => $t('edit'),
+			command: (event) => { app.openPageDialog({ page:'users/edit', url: `/users/edit/${data.userid}`, closeBtn: true }) },
+			icon: "pi pi-pencil",
+			visible: auth.canManage('users/edit', data.userid)
+		},
+		{
+			label: () => $t('delete'),
+			command: (event) => { deleteItem(data.userid) },
+			icon: "pi pi-trash",
+			visible: auth.canManage('users/delete', data.userid)
+		}
+	]
+	}
+	onMounted(()=>{
+		const pageTitle = $t('myAccount');
+		app.setPageTitle(props.routeName, pageTitle); // set browser page title
+	});
+</script>
+<style scoped>
+</style>

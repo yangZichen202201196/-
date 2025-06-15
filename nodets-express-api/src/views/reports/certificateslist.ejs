@@ -1,0 +1,34 @@
+
+<div id="report-title"><h1>Certificates</h1></div>
+<table class="table table-sm table-striped">
+    <thead>
+        <tr>
+            <th>Certificate Id</th>
+            <th>Certificate Type</th>
+            <th>Certificate Name</th>
+            <th>Student Id</th>
+            <th>Award Date</th>
+            <th>Blocknum</th>
+            <th>Tx Hash</th>
+            <th>Certificate Photo</th>
+            <th>Users Username</th>
+            <th>Users Usertele</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% records.forEach(function(record){ %>
+        <tr>
+            <td><%= record.certificate_id %></td>
+            <td><%= record.certificate_type %></td>
+            <td><%= record.certificate_name %></td>
+            <td><%= record.student_id %></td>
+            <td><%= record.award_date %></td>
+            <td><%= record.blocknum %></td>
+            <td><%= record.tx_hash %></td>
+            <td><%= record.certificate_photo %></td>
+            <td><%= record.users_username %></td>
+            <td><%= record.users_usertele %></td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>

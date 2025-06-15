@@ -1,0 +1,34 @@
+
+<div id="report-title"><h1>Course Grades</h1></div>
+<table class="table table-sm table-striped">
+    <thead>
+        <tr>
+            <th>Users Username</th>
+            <th>Users Userphoto</th>
+            <th>Usual Score</th>
+            <th>Exam Score</th>
+            <th>Total Score</th>
+            <th>Credit</th>
+            <th>Courses Course Name</th>
+            <th>Blocknum</th>
+            <th>Tx Hash</th>
+            <th>Timestamp</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% records.forEach(function(record){ %>
+        <tr>
+            <td><%= record.users_username %></td>
+            <td><%= record.users_userphoto %></td>
+            <td><%= record.usual_score %></td>
+            <td><%= record.exam_score %></td>
+            <td><%= record.total_score %></td>
+            <td><%= record.credit %></td>
+            <td><%= record.courses_course_name %></td>
+            <td><%= record.blocknum %></td>
+            <td><%= record.tx_hash %></td>
+            <td><%= record.timestamp %></td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>
